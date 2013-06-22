@@ -23,7 +23,8 @@ function send_fifo_cmd($fifo, $str)
 
   if ($o === FALSE)
   {
-    goto ERROR;
+    //goto _ERROR;
+    die("oh shit what the shit shit guys shit");
   }
 
   return $o;
@@ -52,21 +53,21 @@ function send_xset_cmd($str)
 if ($cmd == 'stop')
 {
   send_mplayer_cmd("stop");
-  goto LISTFILES;
+  goto _LISTFILES;
 }
 
 if ($cmd == 'pause')
 {
   send_mplayer_cmd("pause");
   print("<a class=\"play\" href=\"?cmd=play\">play</a>\n");
-  goto END;
+  goto _END;
 }
 
 if ($cmd == 'play')
 {
   send_mplayer_cmd("pause");
   print("<a class=\"pause\" href=\"?cmd=pause\">pause</a>\n");
-  goto END;
+  goto _END;
 }
 
 # cmd empty, start a video
@@ -77,14 +78,14 @@ if (is_file($path))
   # play movie
   send_mplayer_cmd("loadfile \"$path\"");
   print("<a class=\"pause\" href=\"?path=".urlencode($path)."&cmd=pause\">pause</a>\n");
-  goto END;
+  goto _END;
 }
 
-LISTFILES:
+_LISTFILES:
 
 # default directory
 if (!is_dir($path))
-  $path = '/home/torrents/done/today';
+  $path = '/home/torrents/done';
 
 if ($h = opendir($path))
 {
@@ -94,15 +95,15 @@ if ($h = opendir($path))
   }
   closedir($handle);
   print("</ul>\n");
-  goto END;
+  goto _END;
 }
 
-ERROR:
+_ERROR:
 
 print("there was an error or something...");
 exit(1);
 
-END:
+_END:
 ?>
 </div>
 </body>
