@@ -15,19 +15,38 @@
 $path = $_GET['path'];
 $cmd = $_GET['cmd'];
 
-function send_mplayer_cmd($str)
+function send_fifo_cmd($fifo, $str)
 {
-  $fifo = '/home/everyone/movies';
   $f = fopen($fifo, "w");
   $o = fwrite($f, $str."\n");
   fclose($f);
 
   if ($o === FALSE)
   {
-    die("FUCK EVERYTHING");
+    goto ERROR;
   }
 
   return $o;
+}
+
+/**
+ * set up the fifos
+ *
+ * ~$ cd /home/everyone/
+ * everyone$ mkdir movies
+ * everyone$ cd movies/
+ * movies$ mkfifo mplayer
+ * movies$ mkfifo xset
+ */
+
+function send_mplayer_cmd($str)
+{
+  return send_fifo_cmd('/home/everyone/movies/mplayer', $str);
+}
+
+function send_xset_cmd($str)
+{
+  return send_fifo_cmd('/home/everyone/movies/xset', $str);
 }
 
 if ($cmd == 'stop')
@@ -54,7 +73,8 @@ if ($cmd == 'play')
 if (is_file($path))
 {
   # turn screen on
-  system('DISPLAY=:0 /usr/bin/sudo -E -u ren /usr/bin/xset dpms force on');
+  send_xset_cmd("wakeup");
+  # play movie
   send_mplayer_cmd("loadfile \"$path\"");
   print("<a class=\"pause\" href=\"?path=".urlencode($path)."&cmd=pause\">pause</a>\n");
   goto END;
@@ -76,6 +96,8 @@ if ($h = opendir($path))
   print("</ul>\n");
   goto END;
 }
+
+ERROR:
 
 print("there was an error or something...");
 exit(1);
