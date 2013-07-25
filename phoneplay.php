@@ -2,6 +2,7 @@
 <head>
 <title>play something</title>
 <link href="phoneplay.css" rel="stylesheet" type="text/css" />
+<meta name = "viewport"  content = "initial-scale = 1.0, user-scalable = no">
 </head>
 <body>
 <div id="header">
