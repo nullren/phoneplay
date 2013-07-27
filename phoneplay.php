@@ -1,16 +1,19 @@
 <html>
 <head>
 <title>play something</title>
-<link href="phoneplay.css" rel="stylesheet" type="text/css" />
-<meta name = "viewport"  content = "initial-scale = 1.0, user-scalable = no">
+<meta name = "viewport"  content = "initial-scale=1.0, user-scalable=no, width=device-width">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
 </head>
 <body>
-<div id="header">
-<a href="?">home</a>
-<a href="?cmd=stop">stop</a>
-<hr />
+<div data-role="page">
+<div data-role="header">
+<a data-role="button" href="/">home</a>
+<a data-role="button" href="?cmd=stop">stop</a>
+<h3>play something</h3>
 </div>
-<div id="content">
+<div data-role="content">
 <?php
 
 $path = $_GET['path'];
@@ -90,7 +93,8 @@ if (!is_dir($path))
 
 if ($h = opendir($path))
 {
-  print("<ul>\n");
+  #print("<h6>$path</h6>\n");
+  print("<ul data-role=\"listview\" data-filter=\"true\">\n");
   while (false !== ($entry = readdir($h))) {
     print("<li><a href=\"?path=".urlencode(realpath("$path/$entry"))."\">$entry</a></li>\n");
   }
@@ -106,6 +110,7 @@ exit(1);
 
 _END:
 ?>
+</div>
 </div>
 </body>
 </html>
