@@ -40,35 +40,46 @@ session_start();
 <div class="panel-content">
 <h4>Volume:</h4>
 <div data-role="controlgroup" data-type="horizontal">
-<a data-role="button" data-icon="plus" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=volup">Volume Up</a>
-<a data-role="button" data-icon="minus" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=voldown">Volume Down</a>
+<a class="json" data-role="button" data-icon="plus" data-ajax="false"
+   data-mini="true" data-iconpos="notext" href="json.php?cmd=volup">Volume Up</a>
+<a class="json" data-role="button" data-icon="minus" data-ajax="false"
+   data-mini="true" data-iconpos="notext" href="json.php?cmd=voldown">Volume Down</a>
 </div>
-<form method="get" action="" id="wtform">
+<form method="get" action="json.php" id="wtform">
 <div data-role="fieldcontain">
-  <input type="range" name="vol" id="vol" value="<?php echo empty($_SESSION['vol']) ? 50 : $_SESSION['vol']; ?>" min="0" max="100"  />
+  <input type="range" name="vol" id="vol" value="<?php 
+      echo empty($_SESSION['vol']) ? 50 : $_SESSION['vol'];
+    ?>" min="0" max="100"  />
   <input type="hidden" name="cmd" value="vol" />
   <input type="submit" name="submit" data-mini="true" value="change" />
 </div>
 </form>
 <h4>Position:</h4>
 <div data-role="controlgroup" data-type="horizontal">
-<a data-role="button" data-icon="arrow-l" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=rrew">Really Rewind</a>
-<a data-role="button" data-icon="back" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=rew">Rewind</a>
-<a data-role="button" data-icon="forward" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=fwd">Forward</a>
-<a data-role="button" data-icon="arrow-r" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=ffwd">Fast Forward</a>
+<a class="json" data-role="button" data-icon="arrow-l"
+   data-ajax="false" data-mini="true" data-iconpos="notext"
+   href="json.php?cmd=rrew">Really Rewind</a>
+<a class="json" data-role="button" data-icon="back" data-ajax="false"
+   data-mini="true" data-iconpos="notext" href="json.php?cmd=rew">Rewind</a>
+<a class="json" data-role="button" data-icon="forward"
+   data-ajax="false" data-mini="true" data-iconpos="notext"
+   href="json.php?cmd=fwd">Forward</a>
+<a class="json" data-role="button" data-icon="arrow-r"
+   data-ajax="false" data-mini="true" data-iconpos="notext"
+   href="json.php?cmd=ffwd">Fast Forward</a>
 </div>
 <h4>Display:</h4>
 <div data-role="controlgroup" data-type="horizontal">
-<a data-role="button" data-ajax="false" data-mini="true" href="?cmd=osd">OSD</a>
-<a data-role="button" data-ajax="false" data-mini="true" href="?cmd=sub_select">Subs</a>
+<a class="json" data-role="button" data-ajax="false" data-mini="true" href="json.php?cmd=osd">OSD</a>
+<a class="json" data-role="button" data-ajax="false" data-mini="true" href="json.php?cmd=sub_select">Subs</a>
 </div>
 </div>
 </div>
 <div data-role="header" class="header-bar">
 <div data-role="controlgroup" data-type="horizontal" style="float:left">
 <a data-role="button" data-icon="home" data-ajax="false" href="?path=/home/torrents/done">home</a>
-<a data-role="button" data-ajax="false" href="?cmd=pause">Play/Pause</a>
-<a data-role="button" data-ajax="false" href="?cmd=stop">Stop</a>
+<a class="json" data-role="button" data-ajax="false" href="json.php?cmd=pause">Play/Pause</a>
+<a class="json" data-role="button" data-ajax="false" href="json.php?cmd=stop">Stop</a>
 </div>
 <div align="right" data-role="controlgroup" data-type="horizontal">
 <a data-role="button" data-icon="bars" data-iconpos="notext" href="#controls">Controls</a>
@@ -77,119 +88,15 @@ session_start();
 <div data-role="content">
 <?php
 
-/**
- * set up the fifos
- *
- * ~$ cd /home/everyone/
- * everyone$ mkdir movies
- * everyone$ cd movies/
- * movies$ mkfifo mplayer
- * movies$ mkfifo xset
- */
-function send_fifo_cmd($fifo, $str)
-{
-  if (NO_FIFO)
-    return NO_FIFO;
-
-  $f = fopen($fifo, "w");
-  $o = fwrite($f, $str."\n");
-  fclose($f);
-
-  if ($o === FALSE)
-  {
-    //goto _ERROR;
-    die("oh shit what the shit shit guys shit");
-  }
-
-  return $o;
-}
-
-function send_mplayer_cmd($str)
-{
-  return send_fifo_cmd(MPLAYER_FIFO, $str);
-}
-
-function send_xset_cmd($str)
-{
-  return send_fifo_cmd(XSET_FIFO, $str);
-}
-
-/**
- * these are the possible query string things. read them and do
- * something intelligent, hopefully.
- */
 $path = NULL;
-$cmd = NULL;
-
 if (!empty($_GET['path']))
   $path = $_GET['path'];
 
 if (empty($path) && !empty($_SESSION['path']))
   $path = $_SESSION['path'];
 
-if (!empty($_GET['cmd']))
-  $cmd = $_GET['cmd'];
-
-switch ($cmd) {
-  case 'volup':
-    send_mplayer_cmd("volume +5");
-    break;
-
-  case 'voldown':
-    send_mplayer_cmd("volume -5");
-    break;
-
-  case 'vol':
-    if (!empty($_GET['vol'])){
-      send_mplayer_cmd("volume ".$_GET['vol'].' 1');
-      $_SESSION['vol'] = $_GET['vol'];
-    }
-    break;
-
-  case 'sub_select':
-    send_mplayer_cmd("sub_select");
-    break;
-
-  case 'osd':
-    send_mplayer_cmd("osd");
-    break;
-
-  case 'stop':
-    send_mplayer_cmd("stop");
-    break;
-
-  case 'fwd':
-    send_mplayer_cmd("seek +10 0");
-    break;
-
-  case 'ffwd':
-    send_mplayer_cmd("seek +60 0");
-    break;
-
-  case 'rew':
-    send_mplayer_cmd("seek -10 0");
-    break;
-
-  case 'rrew':
-    send_mplayer_cmd("seek -60 0");
-    break;
-
-  case 'pause':
-    send_mplayer_cmd("pause");
-    break;
-
-  case 'loadfile':
-    if (is_file($path))
-    {
-      # turn screen on
-      send_xset_cmd("wakeup");
-      # play movie
-      send_mplayer_cmd("loadfile \"$path\"");
-      # change path to parent directory.
-      $path = dirname($path);
-    }
-    break;
-}
+if (is_file($path))
+  $path = dirname($path);
 
 /**
  * don't go below MOVIE_ROOT. this is useful if you dont' want to
@@ -208,7 +115,15 @@ if ($h = opendir($path))
   #print("<h6>$path</h6>\n");
   print("<ul data-role=\"listview\" data-filter=\"true\">\n");
   while (false !== ($entry = readdir($h))) {
-    print("<li><a data-transition=\"slide\" href=\"?cmd=loadfile&path=".urlencode(realpath("$path/$entry"))."\">$entry</a></li>\n");
+    $t_path = realpath("$path/$entry");
+    $t_path_str = urlencode($t_path);
+    $class = $href = "";
+    if (is_file($t_path))
+    {
+      $class = "json file";
+      $href = "json.php";
+    }
+    print("<li><a class=\"$class\" data-transition=\"slide\" href=\"$href?cmd=loadfile&path=$t_path\">$entry</a></li>\n");
   }
   closedir($h);
   print("</ul>\n");
