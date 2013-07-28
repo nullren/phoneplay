@@ -31,7 +31,7 @@ session_start();
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 <style>
-  .panel-content { }
+  .panel-content { text-align: center; }
   body, html { padding: 0; margin: 0 }
   .header-bar { padding: 5px }
 </style>
@@ -59,6 +59,11 @@ data-display="reveal" data-dismissible="true">
 <a class="json" data-role="button" data-icon="back" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=rew">Rewind</a>
 <a class="json" data-role="button" data-icon="forward" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=fwd">Forward</a>
 <a class="json" data-role="button" data-icon="arrow-r" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=ffwd">Fast Forward</a>
+</div>
+<h4>Playback:</h4>
+<div data-role="controlgroup" data-type="horizontal">
+<a class="json" data-icon="check" data-iconpos="notext" data-role="button" data-ajax="false" href="json.php?cmd=pause">Play/Pause</a>
+<a class="json" data-icon="delete" data-iconpos="notext" data-role="button" data-ajax="false" href="json.php?cmd=stop">Stop</a>
 </div>
 <h4>Display:</h4>
 <div data-role="controlgroup" data-type="horizontal">
