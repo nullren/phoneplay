@@ -142,6 +142,8 @@ $('a.json').on('click', function(e){
   e.preventDefault();
   talk_cute($(this).attr('href'));
   $(this).removeClass('ui-btn-active ui-focus');
+  if($(this).hasClass('file'))
+    $(this).closest('li').removeClass('ui-btn-active ui-focus');
   return false;
 });
 
