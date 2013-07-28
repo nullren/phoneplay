@@ -5,6 +5,9 @@
  * smoothly between things.
  */
 
+define('MPLAYER_FIFO', '/home/everyone/movies/mplayer');
+define('XSET_FIFO', '/home/everyone/movies/xset');
+
 session_start();
 
 ?><html>
@@ -54,12 +57,12 @@ function send_fifo_cmd($fifo, $str)
 
 function send_mplayer_cmd($str)
 {
-  return send_fifo_cmd('/home/everyone/movies/mplayer', $str);
+  return send_fifo_cmd(MPLAYER_FIFO, $str);
 }
 
 function send_xset_cmd($str)
 {
-  return send_fifo_cmd('/home/everyone/movies/xset', $str);
+  return send_fifo_cmd(XSET_FIFO, $str);
 }
 
 /**
