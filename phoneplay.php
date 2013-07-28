@@ -107,7 +107,7 @@ if ($cmd == 'loadfile' && is_file($path))
  * don't go below MOVIE_ROOT
  */
 
-if (!is_dir($path) || join("/",array_slice(explode(DIRECTORY_SEPARATOR, $path),0,4)) != MOVIE_ROOT )
+if (!is_dir($path) || join("/", array_slice(explode(DIRECTORY_SEPARATOR, $path),0, sizeof(explode(DIRECTORY_SEPARATOR,MOVIE_ROOT)))) != MOVIE_ROOT )
   $path = MOVIE_ROOT;
 
 if ($h = opendir($path))
