@@ -24,6 +24,8 @@ session_start();
 <html>
 <head>
 <title>play something</title>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+<meta content="utf-8" http-equiv="encoding"/>
 <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width"/>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -41,33 +43,22 @@ data-display="reveal" data-dismissible="true">
 <div class="panel-content">
 <h4>Volume:</h4>
 <div data-role="controlgroup" data-type="horizontal">
-<a class="json" data-role="button" data-icon="plus" data-ajax="false"
-   data-mini="true" data-iconpos="notext" href="json.php?cmd=volup">Volume Up</a>
-<a class="json" data-role="button" data-icon="minus" data-ajax="false"
-   data-mini="true" data-iconpos="notext" href="json.php?cmd=voldown">Volume Down</a>
+<a class="json" data-role="button" data-icon="plus" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=volup">Volume Up</a>
+<a class="json" data-role="button" data-icon="minus" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=voldown">Volume Down</a>
 </div>
 <form method="get" action="json.php" id="wtform">
 <div data-role="fieldcontain">
-  <input type="range" name="vol" id="vol" value="<?php 
-      echo empty($_SESSION['vol']) ? 50 : $_SESSION['vol'];
-    ?>" min="0" max="100"  />
+  <input type="range" name="vol" id="vol" value="<?php echo empty($_SESSION['vol']) ? 50 : $_SESSION['vol']; ?>" min="0" max="100"  />
   <input type="hidden" name="cmd" value="vol" />
   <input type="submit" name="submit" data-mini="true" value="change" />
 </div>
 </form>
 <h4>Position:</h4>
 <div data-role="controlgroup" data-type="horizontal">
-<a class="json" data-role="button" data-icon="arrow-l"
-   data-ajax="false" data-mini="true" data-iconpos="notext"
-   href="json.php?cmd=rrew">Really Rewind</a>
-<a class="json" data-role="button" data-icon="back" data-ajax="false"
-   data-mini="true" data-iconpos="notext" href="json.php?cmd=rew">Rewind</a>
-<a class="json" data-role="button" data-icon="forward"
-   data-ajax="false" data-mini="true" data-iconpos="notext"
-   href="json.php?cmd=fwd">Forward</a>
-<a class="json" data-role="button" data-icon="arrow-r"
-   data-ajax="false" data-mini="true" data-iconpos="notext"
-   href="json.php?cmd=ffwd">Fast Forward</a>
+<a class="json" data-role="button" data-icon="arrow-l" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=rrew">Really Rewind</a>
+<a class="json" data-role="button" data-icon="back" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=rew">Rewind</a>
+<a class="json" data-role="button" data-icon="forward" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=fwd">Forward</a>
+<a class="json" data-role="button" data-icon="arrow-r" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=ffwd">Fast Forward</a>
 </div>
 <h4>Display:</h4>
 <div data-role="controlgroup" data-type="horizontal">
@@ -150,6 +141,7 @@ function talk_cute(href)
 $('a.json').on('click', function(e){
   e.preventDefault();
   talk_cute($(this).attr('href'));
+  $(this).removeClass('.ui-btn-active');
 });
 
 $('#wtform').submit(function(e){
@@ -158,7 +150,7 @@ $('#wtform').submit(function(e){
 });
 
 $(document).on('swipeleft', function(e, ui){
-  $('#controls').panel('open', {display:'push',position:'right'});
+  $('#controls').panel('open');
 });
 
 </script>
