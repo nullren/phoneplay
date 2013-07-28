@@ -7,6 +7,7 @@
 
 define('MPLAYER_FIFO', '/home/everyone/movies/mplayer');
 define('XSET_FIFO', '/home/everyone/movies/xset');
+define('MOVIE_ROOT', '/home/torrents/done');
 
 session_start();
 
@@ -104,7 +105,7 @@ if ($cmd == 'loadfile' && is_file($path))
 
 # default directory
 if (!is_dir($path))
-  $path = '/home/torrents/done';
+  $path = MOVIE_ROOT;
 
 if ($h = opendir($path))
 {
