@@ -34,6 +34,13 @@ session_start();
 <a data-role="button" data-icon="plus" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=volup">Volume Up</a>
 <a data-role="button" data-icon="minus" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=voldown">Volume Down</a>
 </div>
+<form method="get" action="" id="wtform">
+<div data-role="fieldcontain">
+  <input type="range" name="vol" id="vol" value="<?php echo empty($_SESSION['vol']) ? 50 : $_SESSION['vol']; ?>" min="0" max="100"  />
+  <input type="hidden" name="cmd" value="vol" />
+  <input type="submit" name="submit" data-mini="true" value="change" />
+</div>
+</form>
 <h4>Position:</h4>
 <div data-role="controlgroup" data-type="horizontal">
 <a data-role="button" data-icon="arrow-l" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=rrew">Really Rewind</a>
@@ -120,6 +127,13 @@ switch ($cmd) {
 
   case 'voldown':
     send_mplayer_cmd("volume -5");
+    break;
+
+  case 'vol':
+    if (!empty($_GET['vol'])){
+      send_mplayer_cmd("volume ".$_GET['vol'].' 1');
+      $_SESSION['vol'] = $_GET['vol'];
+    }
     break;
 
   case 'sub_select':
