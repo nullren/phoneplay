@@ -48,7 +48,7 @@ data-display="reveal" data-dismissible="true">
 </div>
 <form method="get" action="json.php" id="wtform">
 <div data-role="fieldcontain">
-  <input type="range" name="vol" id="vol" value="<?php echo empty($_SESSION['vol']) ? 50 : $_SESSION['vol']; ?>" min="0" max="100"  />
+  <input type="range" name="vol" id="vol" value="<?php echo empty($_SESSION['vol']) ? 50 : $_SESSION['vol']; ?>" min="0" max="100" />
   <input type="hidden" name="cmd" value="vol" />
   <input type="submit" name="submit" data-mini="true" value="change" />
 </div>
@@ -141,12 +141,20 @@ function talk_cute(href)
 $('a.json').on('click', function(e){
   e.preventDefault();
   talk_cute($(this).attr('href'));
-  $(this).removeClass('.ui-btn-active');
+  $(this).removeClass('ui-btn-active ui-focus');
+  return false;
 });
 
 $('#wtform').submit(function(e){
   talk_cute('json.php?' + $(this).serialize());
   return false;
+});
+
+$('#vol').change(function(){
+  alert('yay');
+  $('#wtform').trigger('submit');
+  //$('#wtform').submit();
+  //$(this).closest('form').trigger('submit');
 });
 
 $(document).on('swipeleft', function(e, ui){
