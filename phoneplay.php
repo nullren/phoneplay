@@ -104,7 +104,7 @@ if ($cmd == 'loadfile' && is_file($path))
 }
 
 # default directory
-if (!is_dir($path))
+if (!is_dir($path) || join("/",array_slice(explode(DIRECTORY_SEPARATOR, $path),0,4)) != MOVIE_ROOT )
   $path = MOVIE_ROOT;
 
 if ($h = opendir($path))
