@@ -23,9 +23,9 @@ session_start();
 <div data-role="page">
 <div data-role="header">
 <div data-role="controlgroup" data-type="horizontal">
-<a data-role="button" data-icon="home" href="?path=/home/torrents/done">home</a>
-<a data-role="button" data-inline="true" href="?cmd=pause">Play/Pause</a>
-<a data-role="button" data-inline="true" href="?cmd=stop">Stop</a>
+<a data-role="button" data-icon="home" data-ajax="false" href="?path=/home/torrents/done">home</a>
+<a data-role="button" data-inline="true" data-ajax="false" href="?cmd=pause">Play/Pause</a>
+<a data-role="button" data-inline="true" data-ajax="false" href="?cmd=stop">Stop</a>
 </div>
 </div>
 <div data-role="content">
@@ -115,7 +115,7 @@ if ($h = opendir($path))
   #print("<h6>$path</h6>\n");
   print("<ul data-role=\"listview\" data-filter=\"true\">\n");
   while (false !== ($entry = readdir($h))) {
-    print("<li><a href=\"?cmd=loadfile&path=".urlencode(realpath("$path/$entry"))."\">$entry</a></li>\n");
+    print("<li><a data-transition=\"slide\" href=\"?cmd=loadfile&path=".urlencode(realpath("$path/$entry"))."\">$entry</a></li>\n");
   }
   closedir($h);
   print("</ul>\n");
