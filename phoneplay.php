@@ -36,7 +36,8 @@ session_start();
 </head>
 <body>
 <div data-role="page">
-<div data-role="panel" id="controls" data-position="right" data-display="reveal" data-dismissible="true">
+<div data-role="panel" id="controls" data-position="right"
+data-display="reveal" data-dismissible="true">
 <div class="panel-content">
 <h4>Volume:</h4>
 <div data-role="controlgroup" data-type="horizontal">
@@ -134,5 +135,32 @@ $_SESSION['path'] = $path;
 ?>
 </div>
 </div>
+<script>
+// stuff here
+function talk_cute(href)
+{
+  $.getJSON(href, function(data){
+    if(!data.result)
+    {
+      $('#content').replaceWith('failed...');
+    }
+  });
+}
+
+$('a.json').on('click', function(e){
+  e.preventDefault();
+  talk_cute($(this).attr('href'));
+});
+
+$('#wtform').submit(function(e){
+  talk_cute('json.php?' + $(this).serialize());
+  return false;
+});
+
+$(document).on('swipeleft', function(e, ui){
+  $('#controls').panel('open', {display:'push',position:'right'});
+});
+
+</script>
 </body>
 </html>
