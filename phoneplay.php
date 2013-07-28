@@ -41,6 +41,11 @@ session_start();
 <a data-role="button" data-icon="forward" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=fwd">Forward</a>
 <a data-role="button" data-icon="arrow-r" data-ajax="false" data-mini="true" data-iconpos="notext" href="?cmd=ffwd">Fast Forward</a>
 </div>
+<h4>Display:</h4>
+<div data-role="controlgroup" data-type="horizontal">
+<a data-role="button" data-ajax="false" data-mini="true" href="?cmd=osd">OSD</a>
+<a data-role="button" data-ajax="false" data-mini="true" href="?cmd=sub_select">Subs</a>
+</div>
 </div>
 </div>
 <div data-role="header" class="header-bar">
@@ -108,24 +113,58 @@ if (empty($path) && !empty($_SESSION['path']))
 if (!empty($_GET['cmd']))
   $cmd = $_GET['cmd'];
 
-if ($cmd == 'stop')
-{
-  send_mplayer_cmd("stop");
-}
+switch ($cmd) {
+  case 'volup':
+    send_mplayer_cmd("volume +5");
+    break;
 
-if ($cmd == 'pause')
-{
-  send_mplayer_cmd("pause");
-}
+  case 'voldown':
+    send_mplayer_cmd("volume -5");
+    break;
 
-if ($cmd == 'loadfile' && is_file($path))
-{
-  # turn screen on
-  send_xset_cmd("wakeup");
-  # play movie
-  send_mplayer_cmd("loadfile \"$path\"");
-  # change path to parent directory.
-  $path = dirname($path);
+  case 'sub_select':
+    send_mplayer_cmd("sub_select");
+    break;
+
+  case 'osd':
+    send_mplayer_cmd("osd");
+    break;
+
+  case 'stop':
+    send_mplayer_cmd("stop");
+    break;
+
+  case 'fwd':
+    send_mplayer_cmd("seek +10 0");
+    break;
+
+  case 'ffwd':
+    send_mplayer_cmd("seek +60 0");
+    break;
+
+  case 'rew':
+    send_mplayer_cmd("seek -10 0");
+    break;
+
+  case 'rrew':
+    send_mplayer_cmd("seek -60 0");
+    break;
+
+  case 'pause':
+    send_mplayer_cmd("pause");
+    break;
+
+  case 'loadfile':
+    if (is_file($path))
+    {
+      # turn screen on
+      send_xset_cmd("wakeup");
+      # play movie
+      send_mplayer_cmd("loadfile \"$path\"");
+      # change path to parent directory.
+      $path = dirname($path);
+    }
+    break;
 }
 
 /**
