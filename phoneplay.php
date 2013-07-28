@@ -132,7 +132,14 @@ if ($cmd == 'loadfile' && is_file($path))
  * don't go below MOVIE_ROOT
  */
 
-if (!is_dir($path) || join("/", array_slice(explode(DIRECTORY_SEPARATOR, $path),0, sizeof(explode(DIRECTORY_SEPARATOR,MOVIE_ROOT)))) != MOVIE_ROOT )
+/**
+ * this is useful if you dont' want to descend below a particular
+ * direcotry, but be careful, it might be weird sometimes.
+ *
+ * if (!is_dir($path) || join("/", array_slice(explode(DIRECTORY_SEPARATOR, $path),0, sizeof(explode(DIRECTORY_SEPARATOR,MOVIE_ROOT)))) != MOVIE_ROOT )
+ * 
+ */
+if (!is_dir($path))
   $path = MOVIE_ROOT;
 
 if ($h = opendir($path))
