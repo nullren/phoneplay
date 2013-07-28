@@ -43,8 +43,8 @@ data-display="reveal" data-dismissible="true">
 <div class="panel-content">
 <h4>Volume:</h4>
 <div data-role="controlgroup" data-type="horizontal">
-<a class="json" data-role="button" data-icon="plus" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=volup">Volume Up</a>
 <a class="json" data-role="button" data-icon="minus" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=voldown">Volume Down</a>
+<a class="json" data-role="button" data-icon="plus" data-ajax="false" data-mini="true" data-iconpos="notext" href="json.php?cmd=volup">Volume Up</a>
 </div>
 <form method="get" action="json.php" id="wtform">
 <div data-role="fieldcontain">
