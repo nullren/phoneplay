@@ -1,14 +1,23 @@
 <?php
 
 /**
+ * location where your media files are located.
+ */
+define('MOVIE_ROOT', '/home/torrents/done');
+
+/**
+ * if NO_FIFO is set to true, then disregard any fifo stuff. this is
+ * useful for testing the web app without having a functioning mplayer
+ * daemon running.
+ */
+define('NO_FIFO',FALSE);
+define('MPLAYER_FIFO', '/home/everyone/movies/mplayer');
+define('XSET_FIFO', '/home/everyone/movies/xset');
+
+/**
  * use sessions to remember the last path so we can keep browsing
  * smoothly between things.
  */
-
-define('MPLAYER_FIFO', '/home/everyone/movies/mplayer');
-define('XSET_FIFO', '/home/everyone/movies/xset');
-define('MOVIE_ROOT', '/home/torrents/done');
-
 session_start();
 
 ?><!DOCTYPE html>
@@ -77,9 +86,11 @@ session_start();
  * movies$ mkfifo mplayer
  * movies$ mkfifo xset
  */
-
 function send_fifo_cmd($fifo, $str)
 {
+  if (NO_FIFO)
+    return NO_FIFO;
+
   $f = fopen($fifo, "w");
   $o = fwrite($f, $str."\n");
   fclose($f);
@@ -107,7 +118,6 @@ function send_xset_cmd($str)
  * these are the possible query string things. read them and do
  * something intelligent, hopefully.
  */
-
 $path = NULL;
 $cmd = NULL;
 
@@ -182,18 +192,16 @@ switch ($cmd) {
 }
 
 /**
- * don't go below MOVIE_ROOT
- */
-
-/**
- * this is useful if you dont' want to descend below a particular
- * direcotry, but be careful, it might be weird sometimes.
+ * don't go below MOVIE_ROOT. this is useful if you dont' want to
+ * descend below a particular direcotry, but be careful, it might be
+ * weird sometimes, eg using symlinks.
  *
- * if (!is_dir($path) || join("/", array_slice(explode(DIRECTORY_SEPARATOR, $path),0, sizeof(explode(DIRECTORY_SEPARATOR,MOVIE_ROOT)))) != MOVIE_ROOT )
- * 
+ * if (!is_dir($path) || join(DIRECTORY_SEPARATOR,
+ * array_slice(explode(DIRECTORY_SEPARATOR, $path),0,
+ * sizeof(explode(DIRECTORY_SEPARATOR,MOVIE_ROOT)))) != MOVIE_ROOT )
+ *
  */
-if (!is_dir($path))
-  $path = MOVIE_ROOT;
+if (!is_dir($path)) $path = MOVIE_ROOT;
 
 if ($h = opendir($path))
 {
