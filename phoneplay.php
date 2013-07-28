@@ -103,7 +103,10 @@ if ($cmd == 'loadfile' && is_file($path))
   $path = dirname($path);
 }
 
-# default directory
+/**
+ * don't go below MOVIE_ROOT
+ */
+
 if (!is_dir($path) || join("/",array_slice(explode(DIRECTORY_SEPARATOR, $path),0,4)) != MOVIE_ROOT )
   $path = MOVIE_ROOT;
 
