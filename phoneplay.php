@@ -7,9 +7,6 @@
 
 session_start();
 
-$file_loaded = $_SESSION['file_loaded'];
-
-
 ?><html>
 <head>
 <title>play something</title>
@@ -70,13 +67,17 @@ function send_xset_cmd($str)
  * something intelligent, hopefully.
  */
 
-$path = $_GET['path'];
-if (empty($path))
-{
-  $path = $_SESSION['path'];
-}
+$path = NULL;
+$cmd = NULL;
 
-$cmd = $_GET['cmd'];
+if (!empty($_GET['path']))
+  $path = $_GET['path'];
+
+if (empty($path) && !empty($_SESSION['path']))
+  $path = $_SESSION['path'];
+
+if (!empty($_GET['cmd']))
+  $cmd = $_GET['cmd'];
 
 if ($cmd == 'stop')
 {
@@ -109,7 +110,7 @@ if ($h = opendir($path))
   while (false !== ($entry = readdir($h))) {
     print("<li><a href=\"?cmd=loadfile&path=".urlencode(realpath("$path/$entry"))."\">$entry</a></li>\n");
   }
-  closedir($handle);
+  closedir($h);
   print("</ul>\n");
 }
 
