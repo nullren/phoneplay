@@ -87,12 +87,12 @@ if (!empty($_GET['cmd']))
 switch ($cmd) {
   case 'volup':
     send_mplayer_cmd("volume +10");
-    $_SESSION['vol'] += 5;
+    $_SESSION['vol'] += 10;
     break;
 
   case 'voldown':
     send_mplayer_cmd("volume -10");
-    $_SESSION['vol'] -= 5;
+    $_SESSION['vol'] -= 10;
     break;
 
   case 'vol':

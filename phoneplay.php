@@ -107,7 +107,7 @@ data-display="overlay" data-dismissible="true">
 </div>
 <div align="right" data-role="controlgroup" data-type="horizontal">
 <a data-role="button" data-icon="bars" data-iconpos="notext" href="#controls">Controls</a>
-<a data-role="button" data-icon="star" data-iconpos="notext" href="#system">Controls</a>
+<a data-role="button" data-icon="star" data-iconpos="notext" href="#system">System</a>
 </div>
 </div>
 <div data-theme="a" data-role="content">
