@@ -132,7 +132,7 @@ $_SESSION['path'] = $path;
 </div>
 </div>
 <script>
-// stuff here
+
 function talk_cute(href)
 {
   $.getJSON(href, function(data){
@@ -143,29 +143,30 @@ function talk_cute(href)
   });
 }
 
-$('a.json').on('click', function(e){
+$(document).on('click', 'a.json', function(e){
+  e.stopImmediatePropagation();
   e.preventDefault();
   talk_cute($(this).attr('href'));
   $(this).removeClass('ui-btn-active ui-focus');
   if($(this).hasClass('file'))
     $(this).closest('li').removeClass('ui-btn-active ui-focus');
-  return false;
 });
 
-$('#wtform').submit(function(e){
+$(document).on('submit', 'form', function(e){
+  e.stopImmediatePropagation();
+  e.preventDefault();
   talk_cute('json.php?' + $(this).serialize());
-  return false;
 });
 
-$('#vol').change(function(){
+$(document).on('change', "input[type='range']", function(){
   alert('yay');
-  $('#wtform').trigger('submit');
+  $('form').trigger('submit');
   //$('#wtform').submit();
   //$(this).closest('form').trigger('submit');
 });
 
 $(document).on('swipeleft', function(e, ui){
-  $('#controls').panel('open');
+  $("div[data-role='panel']").panel('open');
 });
 
 </script>
