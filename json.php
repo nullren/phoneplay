@@ -6,7 +6,7 @@
  * daemon running.
  */
 define('NO_FIFO',FALSE);
-define('MPLAYER_FIFO', '/home/everyone/movies/mplayer');
+define('MPLAYER_FIFO', '/home/everyone/mplayerfifo');
 define('XSET_FIFO', '/home/everyone/movies/xset');
 
 session_start();
@@ -86,12 +86,12 @@ if (!empty($_GET['cmd']))
 
 switch ($cmd) {
   case 'volup':
-    send_mplayer_cmd("volume +5");
+    send_mplayer_cmd("volume +10");
     $_SESSION['vol'] += 5;
     break;
 
   case 'voldown':
-    send_mplayer_cmd("volume -5");
+    send_mplayer_cmd("volume -10");
     $_SESSION['vol'] -= 5;
     break;
 
@@ -122,12 +122,20 @@ switch ($cmd) {
     send_mplayer_cmd("seek +60 0");
     break;
 
+  case 'fffwd':
+    send_mplayer_cmd("seek +600 0");
+    break;
+
   case 'rew':
     send_mplayer_cmd("seek -10 0");
     break;
 
   case 'rrew':
     send_mplayer_cmd("seek -60 0");
+    break;
+
+  case 'rrrew':
+    send_mplayer_cmd("seek -600 0");
     break;
 
   case 'pause':
@@ -138,11 +146,33 @@ switch ($cmd) {
     if (is_file($path))
     {
       # turn screen on
-      send_xset_cmd("wakeup");
+      #send_xset_cmd("wakeup");
       # play movie
       send_mplayer_cmd("loadfile \"$path\"");
       # change path to parent directory.
     }
+    break;
+
+  case 'tvon':
+    shell_exec('DISPLAY=:0.0 hdmi.sh on');
+    shell_exec('DISPLAY=:0.0 mplayer --profile=hdmi >/home/everyone/log &');
+    break;
+
+  case 'tvoff':
+    shell_exec('DISPLAY=:0.0 hdmi.sh off');
+    shell_exec('killall mplayer');
+    break;
+
+  case 'reset':
+    shell_exec('killall mplayer');
+    shell_exec('rm /home/everyone/mplayerfifo');
+    shell_exec('mkfifo /home/everyone/mplayerfifo');
+    shell_exec('DISPLAY=:0.0 mplayer --profile=hdmi >/home/everyone/log &');
+    break;
+
+  case 'move':
+    shell_exec('DISPLAY=:0.0 i3-msg \[class="mplayer2"\] focus');
+    shell_exec('DISPLAY=:0.0 i3-msg move workspace number 13: tv');
     break;
 }
 
