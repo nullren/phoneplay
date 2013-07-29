@@ -23,6 +23,8 @@ header('Content-Type: application/json');
  * something to look at. set the result to TRUE or FALSE, FALSE
  * indicates an error. payload then contains whatever content we want
  * to send.
+ *
+ * use this to basically terminate this script.
  */
 function spit_j($r, $payload)
 {
