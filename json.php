@@ -12,6 +12,25 @@ define('XSET_FIFO', '/home/everyone/movies/xset');
 session_start();
 
 /**
+ * the json return packet contains two things: result True or False,
+ * basically, False denotes there was an error. then return contains
+ * the payload.
+ */
+header('Content-Type: application/json');
+
+/**
+ * this function is what is going to give the jquery nonsense
+ * something to look at. set the result to TRUE or FALSE, FALSE
+ * indicates an error. payload then contains whatever content we want
+ * to send.
+ */
+function spit_j($r, $payload)
+{
+  print(json_encode(array('result'=>$r,'return'=>$payload)));
+  exit(0);
+}
+
+/**
  * set up the fifos
  *
  * ~$ cd /home/everyone/
@@ -31,8 +50,7 @@ function send_fifo_cmd($fifo, $str)
 
   if ($o === FALSE)
   {
-    //goto _ERROR;
-    die("oh shit what the shit shit guys shit");
+    spit_j($o,"failed to write to fifo '$fifo'");
   }
 
   return $o;
@@ -72,7 +90,7 @@ switch ($cmd) {
 
   case 'voldown':
     send_mplayer_cmd("volume -5");
-      $_SESSION['vol'] -= 5;
+    $_SESSION['vol'] -= 5;
     break;
 
   case 'vol':
@@ -125,3 +143,5 @@ switch ($cmd) {
     }
     break;
 }
+
+spit_j(TRUE, 'ok'); // this kills the batman

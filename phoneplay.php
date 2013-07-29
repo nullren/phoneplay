@@ -138,7 +138,7 @@ function talk_cute(href)
   $.getJSON(href, function(data){
     if(!data.result)
     {
-      $('#content').replaceWith('failed...');
+      $("div[data-role='content']").replaceWith('failed...');
     }
   });
 }
