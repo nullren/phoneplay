@@ -133,41 +133,44 @@ $_SESSION['path'] = $path;
 </div>
 <script>
 
-function talk_cute(href)
-{
-  $.getJSON(href, function(data){
-    if(!data.result)
-    {
-      $("div[data-role='content']").replaceWith('failed...');
-    }
+$(document).on('pagecreate', function(e){
+  function talk_cute(href)
+  {
+    $.getJSON(href, function(data){
+      if(!data.result)
+      {
+        $("div[data-role='content']").replaceWith('failed...');
+      }
+    });
+  }
+
+  $(document).on('click', 'a.json', function(e){
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    talk_cute($(this).attr('href'));
+    $(this).removeClass('ui-btn-active ui-focus');
+    if($(this).hasClass('file'))
+      $(this).closest('li').removeClass('ui-btn-active ui-focus');
   });
-}
 
-$(document).on('click', 'a.json', function(e){
-  e.stopImmediatePropagation();
-  e.preventDefault();
-  talk_cute($(this).attr('href'));
-  $(this).removeClass('ui-btn-active ui-focus');
-  if($(this).hasClass('file'))
-    $(this).closest('li').removeClass('ui-btn-active ui-focus');
+  $(document).on('submit', 'form', function(e){
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    talk_cute('json.php?' + $(this).serialize());
+  });
+
+  $(document).on('change', "input[type='range']", function(){
+    alert('yay');
+    $('form').trigger('submit');
+    //$('#wtform').submit();
+    //$(this).closest('form').trigger('submit');
+  });
+
+  $(document).on('swipeleft', function(e, ui){
+    $("div[data-role='panel']").panel('open');
+  });
 });
 
-$(document).on('submit', 'form', function(e){
-  e.stopImmediatePropagation();
-  e.preventDefault();
-  talk_cute('json.php?' + $(this).serialize());
-});
-
-$(document).on('change', "input[type='range']", function(){
-  alert('yay');
-  $('form').trigger('submit');
-  //$('#wtform').submit();
-  //$(this).closest('form').trigger('submit');
-});
-
-$(document).on('swipeleft', function(e, ui){
-  $("div[data-role='panel']").panel('open');
-});
 
 </script>
 </body>
